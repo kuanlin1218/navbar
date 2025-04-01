@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>詮栩雲端資料庫</title>
+        <meta charset="UTF-8">
+        <!-- 響應式網站 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Boostrap 導入程式 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        
+        <!-- CSS設計 -->
+            <!--<link rel="stylesheet" href="CS_cnc.css"> -->
+            <style>
+                body{
+
+                    /*-- 背景顏色，網站:css gradient --*/
+                    background: rgb(56,80,215);
+                    background: linear-gradient(0deg, rgb(105, 149, 221) 0%, rgba(45,253,191,1) 100%);
+                
+                }
+                
+                /*-- "container"表單容器 --*/
+                .container{
+                    /*background-color:rgb(158, 238, 243);*/
+                    background: rgb(56,80,215);
+                    background: linear-gradient(0deg, rgb(105, 149, 221) 0%, rgba(45,253,191,1) 100%);
+                    padding:50px; /*容器空間*/
+                    margin-top:0px; /*網頁上空間*/
+                    margin-bottom:0px; /*網頁下空間*/
+                }
+                
+                h1{
+                    text-align: center; /*文字置中*/
+                    color:rgb(21, 21, 21);
+                    padding:5px; /*空間*/
+                    letter-spacing: 10px; /*文字間距*/
+                }
+
+                h2{
+                    text-align: center; /*文字置中*/
+                    color:rgb(21, 21, 21);
+                    padding:5px; /*空間*/
+                    /*letter-spacing: 3px;*/ /*文字間距*/
+                }
+                
+                /*-- "label"設定 --*/
+                label{
+                    color:rgb(228, 12, 123);
+                    font-size:22px; /*文字大小*/
+                    font-weight:600; /*字體粗細100-900*/
+                    letter-spacing: 3px; /*文字間距*/
+                }
+                
+                
+                /*-- "btn-success"按鈕設定 --*/
+                .btn-success{
+                    background-color:rgb(43, 141, 48);
+                    width:100%;
+                    font-size:22px;
+                    padding:10px;
+                }
+
+                /*-- "btn-danger"按鈕設定 --*/
+                .btn-danger{
+                    /* background-color:rgb(43, 141, 48); */
+                    width:100%;
+                    font-size:22px;
+                    padding:10px;
+                }
+                
+                
+                /*-- "container"裡面的"row"的"input"設定 --*/
+                .container .row input{
+                    font-size:22px;
+                    color:rgb(0, 0, 0);
+                    border:2px solid rgb(140, 9, 234); /*格子的邊線*/
+                }
+                
+                /*-- container"裡面的"row"的"select"設定 --*/
+                .container .row select{
+                    font-size:22px;
+                    color:rgb(0, 0, 0);
+                    border:2px solid rgb(140, 9, 234); /*格子的邊線*/
+                }
+
+                /*-- container"裡面的"row"的"select"設定 --*/
+                .container .row textarea{
+                    font-size:20px;
+                    color:rgb(0, 0, 0);
+                    border:2px solid rgb(140, 9, 234); /*格子的邊線*/
+                }
+
+                /* 自訂彈出視窗「取消」按鈕樣式 */
+                .btn-custom-cancel {
+                    background-color: #6c757d; /* 深灰色 */
+                    color: #ffffff; /* 白色字體 */
+                    width:100%;
+                }
+
+                /* 自訂彈出視窗「確認」按鈕樣式 */
+                .btn-custom-confirm {
+                    background-color: #245aece7; /* 紅色 */
+                    color: #ffffff; /* 白色字體 */
+                    width:100%;
+                }
+
+                nav{
+                    height: 50px;
+                }
+
+                @media (max-width:600px){
+                    nav{
+                        height: auto;
+                    }
+                }
+
+                .container-fluid .navbar-brand{
+                    font-size:20px;
+                    color: #ffffff;
+                }
+                
+                .navbar{
+                    background-color: #7b7b7de7;
+                }
+
+                li a{
+                    color: #ffffff !important;
+                    font-size:18px;
+                }
+
+                li a:hover{
+                    color: #2c0fe9 !important;
+                    background-color: #ffffffe7;
+                }
+
+                .navbar-toggler{
+                    background-color: #ffffffe7;
+                }
+
+                .nav-link{
+                    /* 外距（與其他元素的間距） */
+                    margin: 10px;
+
+                    /* 內距（內容與邊框的距離） */
+                    padding: 10px;
+                }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        
+
+        <!-- 分頁連結 -->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+
+                <a class="navbar-brand"> 詮栩雲端資料庫 ver.2 </a>
+
+                <!-- 手機 -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <!-- 導航內容（折疊區域） -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="登記.html">加工數量登記</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="查詢.html">加工數量查詢</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="container">
+            <form action="" id="myForm" onsubmit="getValues(event)">
+                
+                <h2> CNC加工數量登記 </h2>
+                <hr>
+                <!-- hr--水平線 -->
+
+                <!-- 第1列，日期 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>日期</label>
+                        <input type="date" id="dt" placeholder="YYYY/MM/DD" class="form-control" required>
+                    </div>
+                </div>
+
+                <!-- br--斷點，分開列跟列間距 -->
+                <br>
+             
+                <!-- 第2列，機台 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>機台</label>
+                        <select id="mc" class="form-select" required></select>
+                    </div>
+                </div>
+                
+                <br>
+
+                <!-- 第3列，產品編號 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>產品編號</label>
+                        <select id="pd" class="form-select" required></select>
+                    </div>
+                </div>
+
+                <br>
+            
+                <!-- 第4列，訂單編號 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>訂單編號</label>
+                        <select id="or" class="form-select" required></select>
+                    </div>
+                </div>
+
+                <br>
+
+                <!-- 第5列，時 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>時</label>
+                        <input type="number" inputmode="decimal" id="hr" placeholder="" class="form-control" required>
+                    </div> 
+                </div>
+
+                <br>
+
+                <!-- 第6列，分 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>分</label>
+                        <input type="number" inputmode="decimal" id="min" placeholder="" class="form-control" required>
+                    </div> 
+                </div>
+
+                <br>
+
+                <!-- 第7列，數量 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>數量</label>
+                        <input type="number" inputmode="decimal" id="num" placeholder="" class="form-control" required>
+                    </div>  
+                </div>
+
+                <br>
+
+                <!-- 第8列，備註 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label>備註</label>
+                        <textarea class="form-control" id="comments" name="comments" placeholder="" rows="2"></textarea>
+                    </div> 
+                </div>
+
+                <br>
+            
+                <hr>
+                <!-- 成功訊息的顯示區域 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                      <div id="successMessage" class="alert alert-success d-none p-1" role="alert">
+                          資料已成功傳送！
+                      </div>
+                      <!-- 錯誤訊息的顯示區域 -->
+                      <div id="errorMessage" class="alert alert-danger d-none p-1" role="alert"></div>
+                    </div>
+                </div>
+
+                <!-- 第9列，送出 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="submit" id="submitButton" class="btn btn-success">
+                            送出
+                        </button>
+                    </div>
+                </div>
+
+                <br>
+
+                <!-- 第10列，刪除最後一筆 -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" id="deleteButton" class="btn btn-danger">
+                            刪除最後一筆
+                        </button>
+                    </div>
+                </div>
+            
+            </form>   
+        </div>
+
+        <!-- 確認刪除的模態框 -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">確認刪除</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                您確定要刪除最後一筆資料嗎？
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-custom-cancel" data-bs-dismiss="modal">取消</button>
+                <button type="button" id="confirmDeleteButton" class="btn btn-custom-confirm">確認</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- JavaScript程式 -->
+        <script>
+
+            // 在頁面載入時載入產品編號和機台
+            window.onload = function() {
+                // 載入產品編號
+                google.script.run.withSuccessHandler(populateProductList).getProductList();
+                
+                // 載入機台
+                google.script.run.withSuccessHandler(populate_mc_List).get_mc_List();
+            };
+
+            // 將產品編號選項加入下拉選單
+            function populateProductList(data) {
+                var pdSelect = document.getElementById("pd");
+
+                // 加入一個空白選項作為初始值
+                var emptyOption = document.createElement("option");
+                emptyOption.value = "";
+                emptyOption.text = "";
+                pdSelect.appendChild(emptyOption);
+
+                // 將從工作表抓取的產品編號加入選項
+                data.forEach(function(item) {
+                    var option = document.createElement("option");
+                    option.value = item;
+                    option.text = item;
+                    pdSelect.appendChild(option);
+                });
+
+                // 當產品編號變更時，觸發訂單編號的更新
+                pdSelect.addEventListener("change", function() {
+                    var selectedProduct = pdSelect.value;
+                    populateOrderNumbers(selectedProduct);
+                });
+            }
+
+            // 根據選取的產品編號填入訂單編號
+            function populateOrderNumbers(productNumber) {
+                var orSelect = document.getElementById("or");
+                orSelect.innerHTML = ""; // 清空現有選項
+
+                // 使用 Google Apps Script API 抓取對應的訂單編號
+                google.script.run.withSuccessHandler(function(orderNumbers) {
+                    orderNumbers.forEach(function(orderNumber) {
+                        var option = document.createElement("option");
+                        option.value = orderNumber;
+                        option.text = orderNumber;
+                        orSelect.appendChild(option);
+                    });
+                }).getOrderNumbers(productNumber);
+            }
+
+
+            // 將機台選項加入下拉選單
+            function populate_mc_List(data) {
+                var mcSelect = document.getElementById("mc");
+
+                // 加入一個空白選項作為初始值
+                var emptyOption = document.createElement("option");
+                emptyOption.value = "";
+                emptyOption.text = "";
+                mcSelect.appendChild(emptyOption); // 確保這裡是 mcSelect
+
+                // 將從工作表抓取的機台加入選項
+                data.forEach(function(item) {
+                    var option = document.createElement("option");
+                    option.value = item;
+                    option.text = item;
+                    mcSelect.appendChild(option); // 確保這裡也是 mcSelect
+                });
+            }
+
+
+            // 抓輸入的值
+            function getValues(event) {
+                event.preventDefault(); // 防止表單的預設提交行為
+
+                var dt = document.getElementById("dt");
+                var mc = document.getElementById("mc");
+                var pd = document.getElementById("pd");
+                var or = document.getElementById("or");
+                var hr = document.getElementById("hr");
+                var min = document.getElementById("min");
+                var num = document.getElementById("num");
+                var com = document.getElementById("comments");
+
+
+                // 格式化日期為 YYYY/M/D
+                var date = new Date(dt.value);
+                var formattedDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+
+                // 檢查是否有填寫資料
+                if (pd.value === ""|| mc.value === ""|| or.value === ""|| hr.value === ""|| min.value === ""|| num.value === "") {
+                    showErrorMessage("資料不完整！");
+                    return; // 若值為空白，則停止程式執行
+                }
+
+
+                //抓值
+                var rowData = {
+                    dt: formattedDate,
+                    mc: mc.value,
+                    pd: pd.value,
+                    or: or.value,
+                    hr: hr.value,
+                    min: min.value,
+                    num: num.value,
+                    com: com.value,
+                };
+
+                // 上傳資料並處理返回值
+                google.script.run.withSuccessHandler(function(result) {
+                    console.log('Result from addData:', result); // 輸出結果以檢查
+                    if (result) {
+                        showSuccessMessage(); // 成功訊息
+                    } else {
+                        showErrorMessage("已有重複資料！"); // 錯誤訊息
+                    }
+                }).addData(rowData);
+
+                // 儲存需要保留的值
+                var dtValue = dt.value;
+                var pdValue = pd.value;
+                var mcValue = mc.value;
+                var orValue = or.value;
+
+                // 清除表單上的資料
+                document.getElementById("myForm").reset();
+
+                // 重新設置保留的值
+                dt.value = dtValue;
+                pd.value = pdValue;
+                mc.value = mcValue;
+                or.value = orValue;
+
+            }
+
+            // 顯示成功訊息的函式
+            function showSuccessMessage() {
+                var successMessage = document.getElementById("successMessage");
+                successMessage.classList.remove("d-none");
+
+                // 設定成功訊息在 3 秒後隱藏
+                setTimeout(function() {
+                    successMessage.classList.add("d-none");
+                }, 3000);
+            }
+
+            // 顯示錯誤訊息的函式
+            function showErrorMessage(message) {
+                var errorMessage = document.getElementById("errorMessage");
+                errorMessage.textContent = message;
+                errorMessage.classList.remove("d-none");
+
+                // 設定錯誤訊息在 3 秒後隱藏
+                setTimeout(function() {
+                    errorMessage.classList.add("d-none");
+                }, 3000);
+            }
+
+            // 綁定刪除按鈕以顯示確認模態框
+            document.getElementById("deleteButton").addEventListener("click", function() {
+                var confirmDeleteModal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
+                confirmDeleteModal.show();
+            });
+
+            // 在確認按鈕點擊後進行刪除
+            document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+                google.script.run.withSuccessHandler(function(result) {
+                    if (result) {
+                        showErrorMessage("最後一筆資料已刪除！");
+                    } else {
+                        showErrorMessage("無法刪除最後一筆資料！");
+                    }
+                }).deleteLastRow();
+
+                // 隱藏模態框
+                var confirmDeleteModal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
+                confirmDeleteModal.hide();
+            });
+
+        </script>
+   
+    </body>
+
+    
+</html>
+
