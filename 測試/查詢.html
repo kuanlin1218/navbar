@@ -147,6 +147,40 @@
                     padding: 10px;
                 }
 
+                /*////////////////////////////////////////////////*/
+                /* 調整表格邊框、欄與列的間距 */
+                #resultTable {
+                    width: 100%;
+                    border-collapse: collapse; /* 使表格邊框合併 */
+                    margin-top: 20px;
+                }
+
+                /* 表格標題列樣式 */
+                #resultTable th {
+                    padding: 12px 15px; /* 內邊距：上下12px，左右15px */
+                    background-color: #f8f9fa; /* 淺灰色背景 */
+                    border: 1px solid #ddd; /* 淺灰色邊框 */
+                    text-align: center;
+                }
+
+                /* 表格資料列樣式 */
+                #resultTable td {
+                    padding: 10px 15px; /* 內邊距：上下10px，左右15px */
+                    border: 1px solid #ddd; /* 淺灰色邊框 */
+                    text-align: center;
+                }
+
+                /* 表格資料列的奇偶行交替顏色 */
+                #resultTable tr:nth-child(even) {
+                    background-color: #f2f2f2; /* 偶數行的背景顏色 */
+                }
+
+                /* 表格總數量行樣式 */
+                #resultTable tr:last-child td {
+                    font-weight: bold;
+                    background-color: #fac400; /* 輕微藍色背景 */
+                }
+
         </style>
 
     </head>
@@ -190,7 +224,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>日期區間</label>
-                        <input type="date" id="dt" placeholder="YYYY/MM/DD" class="form-control" required>
+                        <input type="date" id="dt1" placeholder="YYYY/MM/DD" class="form-control" required>
                     </div>
                 </div>
                 <div class="row">
@@ -220,192 +254,147 @@
                         </button>
                     </div>
                 </div>
-            </form>   
+            </form>
+            <br>
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>產品編號</th>
+                        <th>數量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 查詢結果會顯示在這裡 -->
+                </tbody>
+            </table>
+
         </div>
 
 
 
         <!-- JavaScript程式 -->
         <script>
-
-            // 在頁面載入時載入產品編號和機台
-            window.onload = function() {
-                // 載入產品編號
-                google.script.run.withSuccessHandler(populateProductList).getProductList();
-                
-                // 載入機台
-                google.script.run.withSuccessHandler(populate_mc_List).get_mc_List();
-            };
-
-            // 將產品編號選項加入下拉選單
-            function populateProductList(data) {
-                var pdSelect = document.getElementById("pd");
-
-                // 加入一個空白選項作為初始值
-                var emptyOption = document.createElement("option");
-                emptyOption.value = "";
-                emptyOption.text = "";
-                pdSelect.appendChild(emptyOption);
-
-                // 將從工作表抓取的產品編號加入選項
-                data.forEach(function(item) {
-                    var option = document.createElement("option");
-                    option.value = item;
-                    option.text = item;
-                    pdSelect.appendChild(option);
-                });
-
-                // 當產品編號變更時，觸發訂單編號的更新
-                pdSelect.addEventListener("change", function() {
-                    var selectedProduct = pdSelect.value;
-                    populateOrderNumbers(selectedProduct);
-                });
-            }
-
-            // 根據選取的產品編號填入訂單編號
-            function populateOrderNumbers(productNumber) {
-                var orSelect = document.getElementById("or");
-                orSelect.innerHTML = ""; // 清空現有選項
-
-                // 使用 Google Apps Script API 抓取對應的訂單編號
-                google.script.run.withSuccessHandler(function(orderNumbers) {
-                    orderNumbers.forEach(function(orderNumber) {
-                        var option = document.createElement("option");
-                        option.value = orderNumber;
-                        option.text = orderNumber;
-                        orSelect.appendChild(option);
-                    });
-                }).getOrderNumbers(productNumber);
-            }
-
-
-            // 將機台選項加入下拉選單
-            function populate_mc_List(data) {
-                var mcSelect = document.getElementById("mc");
-
-                // 加入一個空白選項作為初始值
-                var emptyOption = document.createElement("option");
-                emptyOption.value = "";
-                emptyOption.text = "";
-                mcSelect.appendChild(emptyOption); // 確保這裡是 mcSelect
-
-                // 將從工作表抓取的機台加入選項
-                data.forEach(function(item) {
-                    var option = document.createElement("option");
-                    option.value = item;
-                    option.text = item;
-                    mcSelect.appendChild(option); // 確保這裡也是 mcSelect
-                });
-            }
-
-
-            // 抓輸入的值
-            function getValues(event) {
-                event.preventDefault(); // 防止表單的預設提交行為
-
-                var dt = document.getElementById("dt");
-                var mc = document.getElementById("mc");
-                var pd = document.getElementById("pd");
-                var or = document.getElementById("or");
-                var hr = document.getElementById("hr");
-                var min = document.getElementById("min");
-                var num = document.getElementById("num");
-                var com = document.getElementById("comments");
-
-
-                // 格式化日期為 YYYY/M/D
-                var date = new Date(dt.value);
-                var formattedDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
-
-                // 檢查是否有填寫資料
-                if (pd.value === ""|| mc.value === ""|| or.value === ""|| hr.value === ""|| min.value === ""|| num.value === "") {
-                    showErrorMessage("資料不完整！");
-                    return; // 若值為空白，則停止程式執行
-                }
-
-
-                //抓值
-                var rowData = {
-                    dt: formattedDate,
-                    mc: mc.value,
-                    pd: pd.value,
-                    or: or.value,
-                    hr: hr.value,
-                    min: min.value,
-                    num: num.value,
-                    com: com.value,
-                };
-
-                // 上傳資料並處理返回值
-                google.script.run.withSuccessHandler(function(result) {
-                    console.log('Result from addData:', result); // 輸出結果以檢查
-                    if (result) {
-                        showSuccessMessage(); // 成功訊息
-                    } else {
-                        showErrorMessage("已有重複資料！"); // 錯誤訊息
-                    }
-                }).addData(rowData);
-
-                // 儲存需要保留的值
-                var dtValue = dt.value;
-                var pdValue = pd.value;
-                var mcValue = mc.value;
-                var orValue = or.value;
-
-                // 清除表單上的資料
-                document.getElementById("myForm").reset();
-
-                // 重新設置保留的值
-                dt.value = dtValue;
-                pd.value = pdValue;
-                mc.value = mcValue;
-                or.value = orValue;
-
-            }
-
-            // 顯示成功訊息的函式
-            function showSuccessMessage() {
-                var successMessage = document.getElementById("successMessage");
-                successMessage.classList.remove("d-none");
-
-                // 設定成功訊息在 3 秒後隱藏
-                setTimeout(function() {
-                    successMessage.classList.add("d-none");
-                }, 3000);
-            }
-
-            // 顯示錯誤訊息的函式
-            function showErrorMessage(message) {
-                var errorMessage = document.getElementById("errorMessage");
-                errorMessage.textContent = message;
-                errorMessage.classList.remove("d-none");
-
-                // 設定錯誤訊息在 3 秒後隱藏
-                setTimeout(function() {
-                    errorMessage.classList.add("d-none");
-                }, 3000);
-            }
-
-            // 綁定刪除按鈕以顯示確認模態框
-            document.getElementById("deleteButton").addEventListener("click", function() {
-                var confirmDeleteModal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
-                confirmDeleteModal.show();
+        // 在頁面載入時載入產品編號和機台
+        window.onload = function() {
+            // 載入產品編號
+            google.script.run.withSuccessHandler(populateProductList).getProductList();
+            
+            // 確保表單提交事件綁定
+            document.getElementById("myForm").addEventListener("submitButton", function(event) {
+                getValues(event);
             });
 
-            // 在確認按鈕點擊後進行刪除
-            document.getElementById("confirmDeleteButton").addEventListener("click", function() {
-                google.script.run.withSuccessHandler(function(result) {
-                    if (result) {
-                        showErrorMessage("最後一筆資料已刪除！");
-                    } else {
-                        showErrorMessage("無法刪除最後一筆資料！");
-                    }
-                }).deleteLastRow();
+            // 設定 dt1 和 dt2 為昨天的日期
+            var today = new Date();
+            var yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1); // 設定為昨天
 
-                // 隱藏模態框
-                var confirmDeleteModal = bootstrap.Modal.getInstance(document.getElementById("confirmDeleteModal"));
-                confirmDeleteModal.hide();
+            // 格式化為 YYYY-MM-DD 格式
+            var formattedDate = yesterday.toISOString().split('T')[0];
+
+            // 設定日期框的值
+            document.getElementById("dt1").value = formattedDate;
+            document.getElementById("dt2").value = formattedDate;
+        };
+
+        // 將產品編號選項加入下拉選單
+        function populateProductList(data) {
+            var pdSelect = document.getElementById("pd");
+
+            // 加入一個空白選項作為初始值
+            var emptyOption = document.createElement("option");
+            emptyOption.value = "";
+            emptyOption.text = "";
+            pdSelect.appendChild(emptyOption);
+
+            // 將從工作表抓取的產品編號加入選項
+            data.forEach(function(item) {
+                var option = document.createElement("option");
+                option.value = item;
+                option.text = item;
+                pdSelect.appendChild(option);
             });
+        }
+
+        // getValues
+        function getValues(event) {
+            event.preventDefault(); // 防止表單的預設提交行為
+
+            var dt1 = document.getElementById("dt1");
+            var dt2 = document.getElementById("dt2");
+            var pd = document.getElementById("pd");
+
+            // 格式化日期為 YYYY/M/D
+            var date1 = new Date(dt1.value);
+            var formattedDate1 = date1.getFullYear() + '/' + (date1.getMonth() + 1) + '/' + date1.getDate();
+
+            var date2 = new Date(dt2.value);
+            var formattedDate2 = date2.getFullYear() + '/' + (date2.getMonth() + 1) + '/' + date2.getDate();
+
+            // 檢查是否有填寫資料
+            if (pd.value === "") {
+                alert("資料不完整！");
+                return; // 若值為空白，則停止程式執行
+            }
+
+            // 使用 google.script.run 呼叫 GAS 的 getRecordData 方法
+            google.script.run.withSuccessHandler(displayRecordData).getRecordData(formattedDate1, formattedDate2, pd.value);
+        }
+
+        // 顯示查詢結果在表格中並加總數量
+        function displayRecordData(data) {
+            var table = document.getElementById("resultTable");
+            var tbody = table.querySelector("tbody"); // 確保填充的是 <tbody> 部分
+            tbody.innerHTML = ""; // 清空表格
+
+            // 若沒有查詢結果，顯示訊息
+            if (data.length === 0) {
+                var noResult = document.createElement("tr");
+                var td = document.createElement("td");
+                td.colSpan = 3;
+                td.textContent = "沒有符合條件的資料";
+                noResult.appendChild(td);
+                tbody.appendChild(noResult);
+                return;
+            }
+
+            // 初始化數量加總
+            var totalQuantity = 0;
+
+            // 顯示查詢結果並加總數量
+            data.forEach(function(row) {
+                var tr = document.createElement("tr");
+
+                // 每行遍歷資料
+                row.forEach(function(cell, index) {
+                    var td = document.createElement("td");
+                    td.textContent = cell;
+                    tr.appendChild(td);
+
+                    // 若是數量欄（第三欄），則加總
+                    if (index === 2) { // 假設數量在第三欄
+                        totalQuantity += parseInt(cell) || 0; // 防止非數字情況，加上預設值0
+                    }
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            // 顯示總數量
+            var totalRow = document.createElement("tr");
+            var td = document.createElement("td");
+            td.colSpan = 2; // 跨越兩個欄位
+            td.textContent = "總數量";
+            totalRow.appendChild(td);
+
+            var totalCell = document.createElement("td");
+            totalCell.textContent = totalQuantity; // 顯示總數量
+            totalRow.appendChild(totalCell);
+
+            tbody.appendChild(totalRow);
+        }
+
 
         </script>
    
