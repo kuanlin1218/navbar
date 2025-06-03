@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>詮栩 CNC 雲端系統</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <link rel="stylesheet" href="共用風格.css">
+  <link id="dynamic-favicon" rel="icon" type="image/x-icon">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #dce35b, #45b649);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .btn-刀具入庫 {
+      color: white;
+      background-color: #8BC6EC;
+      background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    }
+    .btn-刀具入庫:hover {
+      background-image: none;
+      background-color: none;
+      color: #000000;
+    }
+
+    .btn-刀具查詢 {
+      color: white;
+      background-color: #3EECAC;
+      background-image: linear-gradient(19deg, #3EECAC 0%, #EE74E1 100%);
+    }
+    .btn-刀具查詢:hover {
+      background-image: none;
+      background-color: none;
+      color: #000000;
+    }
+
+    .btn-數量登記 {
+      color: white;
+      background-color: #FBDA61;
+      background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);
+    }
+    .btn-數量登記:hover {
+      background-image: none;
+      background-color: none;
+      color: #000000;
+    }
+
+    .btn-數量查詢 {
+      color: white;
+      background-color: #FBAB7E;
+      background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
+    }
+    .btn-數量查詢:hover {
+      background-image: none;
+      background-color: none;
+      color: #000000;
+    }
+
+    .btn-menu {
+      width: 240px;
+      margin: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    /* 控制logo圖片的大小和對齊 */
+    .logo {
+      height: 80px;        /* 設置圖片高度 */
+      margin-right: 10px;   /* 右邊距離 */
+      margin-left: 5px;   /* 右邊距離 */
+      vertical-align: middle; /* 讓圖片和文字垂直對齊 */
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <img id="brandLogo" alt="Logo" class="logo">
+  <h1>
+    詮栩 CNC 雲端系統
+  </h1>
+
+  <div class="d-flex flex-column align-items-center">
+    <a href="刀具入庫.html" class="btn btn-menu btn-刀具入庫">🛒 刀具入庫</a>
+    <a href="刀具查詢.html" class="btn btn-menu btn-刀具查詢">🔍 刀具查詢</a>
+    <a href="加工數量登記.html" class="btn btn-menu btn-數量登記">📋 加工數量登記</a>
+    <a href="加工數量查詢.html" class="btn btn-menu btn-數量查詢">👨🏻‍💻 加工數量查詢</a>
+  </div>
+  <script>
+    // 設定 LOGO 圖片來源
+    document.getElementById("brandLogo").src = LOGO_URL;
+    // 設定 favicon 圖示
+    document.getElementById("dynamic-favicon").href = FAVICON_URL;
+  </script>
+</body>
+</html>

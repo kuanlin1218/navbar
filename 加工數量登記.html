@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <title>詮栩雲系統</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <link rel="stylesheet" href="共用風格.css">
+  <link id="dynamic-favicon" rel="icon" type="image/x-icon">
+
+  <style>
+    body {
+      height: 100%;
+      margin: 0;
+      background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .input-group-text {
+      color: rgb(170, 11, 151);
+    }
+
+    .btn-綠 {
+      width:100%;
+      font-size:22px;
+      padding:5px;
+      height: 40px;
+      font-weight: bold;
+    }
+
+    .btn-紅 {
+      width:100%;
+      font-size:22px;
+      padding:5px;
+      height: 40px;
+      font-weight: bold;
+    }
+
+    .alert {
+      padding: 5px;
+    }
+
+    .custom-t {
+      height: 50px;
+    }
+    .custom-c {
+      background-color: none; 
+      text-align: left; /*文字置中*/
+      appearance: none; /* 移除瀏覽器預設樣式 (選用) */
+      font-size: 18px; 
+      height: 50px;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- 導覽列 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="首頁.html">
+        <img id="brandLogo" alt="Logo" class="navbar-logo">
+        詮栩CNC雲端系統
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="切換導覽列">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="首頁.html">🏠 首頁</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="刀具入庫.html">🛒 刀具入庫</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="刀具查詢.html">🔍 刀具查詢</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="加工數量登記.html">📋 加工數量登記</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="加工數量查詢.html">👨🏻‍💻 加工數量查詢</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <form id="myForm">
+      <h2 class="text-center">📋 加工數量登記 📋</h2>
+      <hr>
+      <div class="input-group my-3">
+        <span class="input-group-text">日期</span>
+        <input type="date" id="dt" class="form-control custom" required>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text">產品編號</span>
+        <select id="pd" class="form-select custom" required></select>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text">訂單編號</span>
+        <select id="or" class="form-select custom" required></select>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text">機台</span>
+        <select id="mc" class="form-select custom" required></select>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text">時</span>
+        <input type="number" inputmode="decimal" pattern="[0-9]*" id="hr" class="form-control custom" required>
+        <span class="input-group-text">分</span>
+        <input type="number" inputmode="decimal" pattern="[0-9]*" id="min" class="form-control custom" required>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text">數量</span>
+        <input type="number" inputmode="decimal" pattern="[0-9]*" id="num" class="form-control custom" required>
+      </div>
+      <div class="input-group my-3">
+        <span class="input-group-text custom-t">備註</span>
+        <textarea id="comments" class="form-control custom-c" rows="2"></textarea>
+      </div>
+      <div class="alert alert-success d-none" id="successMessage">資料已成功傳送！</div>
+      <div class="alert alert-danger d-none" id="errorMessage"></div>
+      <!-- 送出中提示 -->
+      <div id="loading" class="text-center my-3" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">送出中...</span>
+        </div>
+        <div>送出中，請稍候...</div>
+      </div>
+      <button type="submit" class="btn btn-綠">送出</button>
+      <button type="button" id="deleteButton" class="btn btn-紅 mt-2">刪除最後一筆</button>
+      
+    </form>
+    <hr>
+    
+  </div>
+  <!-- 刪除確認 Modal -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">確認刪除</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">您確定要刪除最後一筆資料嗎？</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" id="confirmDeleteButton">確認</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 設定 LOGO 圖片來源
+    document.getElementById("brandLogo").src = LOGO_URL;
+    // 設定 favicon 圖示
+    document.getElementById("dynamic-favicon").href = FAVICON_URL;
+    
+    /** ============================== 初始化 ============================== */
+    let deleteModal; // ✅ 宣告在 script 開頭的全域變數
+    window.onload = () => {
+      setYesterdayDate("dt");
+      loadMachineList();
+      loadProductList();
+    };
+
+    function showLoading() {
+        document.getElementById("loading").style.display = "block";
+        // document.getElementById("result").innerHTML = "";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    /** 設定昨天日期為預設值 */
+    function setYesterdayDate(inputId) {
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      document.getElementById(inputId).value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    /** 取得機台清單 */
+    function loadMachineList() {
+      fetch(`${scriptUrl}?page=production_entry&type=machine`)
+      .then(res => res.json())
+      .then(data => populateSelect("mc", data))
+      .catch(err => showErrorMessage("無法載入機台資料"));
+    }
+
+    /** 取得產品清單 */
+    function loadProductList() {
+      fetch(`${scriptUrl}?page=production_entry&type=product`)
+      .then(res => res.json())
+      .then(data => {
+        populateSelect("pd", data);
+        document.getElementById("pd").addEventListener("change", e => loadOrderList(e.target.value));
+      })
+      .catch(err => showErrorMessage("無法載入產品資料"));
+    }
+
+    // 根據產品載入訂單編號（✅ 選擇產品後自動帶入第一筆訂單）
+    function loadOrderList(product) {
+      const orderSelect = document.getElementById("or");
+      orderSelect.innerHTML = '';
+      if (!product) return;
+      fetch(`${scriptUrl}?page=production_entry&type=order&pd=${encodeURIComponent(product)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data || data.length === 0) {
+          orderSelect.innerHTML = '<option value="">（無訂單）</option>';
+          return;
+        }
+        data.forEach(order => {
+          const option = new Option(order, order);
+          orderSelect.appendChild(option);
+        });
+        orderSelect.selectedIndex = 0; // ✅ 自動選第一筆
+      })
+      .catch(err => {
+        console.error("訂單載入失敗", err);
+        orderSelect.innerHTML = '<option value="">（載入錯誤）</option>';
+      });
+    }
+
+    /** 將選項填入下拉選單 */
+    function populateSelect(id, items) {
+      const select = document.getElementById(id);
+      select.innerHTML = '<option value=""></option>';
+      items.forEach(i => {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = i;
+        select.appendChild(option);
+      });
+    }
+
+    /** 表單送出 */
+    document.getElementById("myForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const dt = document.getElementById("dt").value;
+      const mc = document.getElementById("mc").value;
+      const pd = document.getElementById("pd").value;
+      const or = document.getElementById("or").value;
+      const hr = document.getElementById("hr").value;
+      const min = document.getElementById("min").value;
+      const num = document.getElementById("num").value;
+      const comments = document.getElementById("comments").value;
+
+      if (!dt || !mc || !pd || !or || !hr || !min || !num) {
+        showErrorMessage("資料不完整！");
+        return;
+      }
+
+      const date = new Date(dt);
+      const rowData = {
+        dt: `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`,
+        mc, pd, or, hr, min, num, comments
+      };
+
+      // 👉 顯示送出中動畫
+      showLoading();
+
+      fetch(scriptUrl, {
+        method: "POST",
+        body: JSON.stringify(rowData)
+      })
+      .then(res => res.json())
+      .then(result => {
+        hideLoading();
+        if (result.success) {
+          showSuccessMessage();
+
+          // 🔁 儲存要保留的欄位值
+          const dtValue = document.getElementById("dt").value;
+          const pdValue = document.getElementById("pd").value;
+          const mcValue = document.getElementById("mc").value;
+          const orValue = document.getElementById("or").value;
+
+          // 🧹 清除整張表單
+          document.getElementById("myForm").reset();
+
+          // 🔁 還原保留欄位值
+          document.getElementById("dt").value = dtValue;
+          document.getElementById("pd").value = pdValue;
+          document.getElementById("mc").value = mcValue;
+          document.getElementById("or").value = orValue;
+        } else {
+          showErrorMessage("已有重複資料！");
+        }
+      })
+      .catch(() => {
+        hideLoading(); // 👉 隱藏動畫
+        showErrorMessage("送出失敗");
+      });
+    });
+
+    /** 顯示成功訊息 */
+    function showSuccessMessage() {
+      const msg = document.getElementById("successMessage");
+      msg.classList.remove("d-none");
+      setTimeout(() => msg.classList.add("d-none"), 3000);
+    }
+
+    /** 顯示錯誤訊息 */
+    function showErrorMessage(text) {
+      const msg = document.getElementById("errorMessage");
+      msg.textContent = text;
+      msg.classList.remove("d-none");
+      setTimeout(() => msg.classList.add("d-none"), 3000);
+    }
+
+    // 點擊刪除按鈕前，顯示最後一筆資料內容
+    document.getElementById("deleteButton").addEventListener("click", () => {
+      fetch(`${scriptUrl}?page=production_entry&type=last_submitted`)
+      .then(res => res.json())
+      .then(data => {
+        const modalBody = document.querySelector("#confirmDeleteModal .modal-body");
+        if (!data) {
+          modalBody.textContent = "找不到最後一筆資料。";
+          return;
+        }
+
+        const recordDate = new Date(data.dt);
+        const displayDate = recordDate.toISOString().split('T')[0];
+
+        const time = new Date(data.timestamp);
+        const displayTimestamp = `${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}:${String(time.getSeconds()).padStart(2, '0')}`;
+
+        modalBody.innerHTML = `
+        <div class="text-danger fw-bold mb-2">以下資料將被刪除：</div>
+        <ul class="mb-0">
+        <li>日期：${displayDate}</li>
+        <li>機台：${data.mc}</li>
+        <li>產品編號：${data.pd}</li>
+        <li>訂單編號：${data.or}</li>
+        <li>加工時間：${data.hr} 時 ${data.min} 分</li>
+        <li>數量：${data.num}</li>
+        <li>備註：${data.com || '(無)'}</li>
+        <li class="text-muted mt-2">登記時間：${displayTimestamp}</li>
+        </ul>
+        `;
+
+        // ✅ 只初始化一次 Modal 實例
+        if (!deleteModal) {
+          deleteModal = new bootstrap.Modal(document.getElementById("confirmDeleteModal"));
+        }
+        deleteModal.show();
+      })
+      .catch(() => {
+        document.querySelector("#confirmDeleteModal .modal-body").textContent = "載入失敗，請稍後再試。";
+      });
+    });
+
+    /** 刪除最後一筆資料（加工數量表） */
+    document.getElementById("confirmDeleteButton").addEventListener("click", () => {
+      fetch(scriptUrl, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'deleteLastProduction' })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) {
+          showErrorMessage("最後一筆資料已刪除！");
+        } else {
+          showErrorMessage("無法刪除最後一筆資料！");
+        }
+
+        // ✅ 成功或失敗後都關閉 Modal
+        if (deleteModal) {
+          deleteModal.hide();
+        }
+      })
+      .catch(() => {
+        showErrorMessage("刪除失敗");
+        if (deleteModal) {
+          deleteModal.hide();
+        }
+      });
+    });
+
+    /** 收起 navbar */
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        const nav = document.getElementById('navbarNav');
+        if (nav.classList.contains('show')) nav.classList.remove('show');
+      });
+    });
+
+    /** 平滑滾動 */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          window.scrollTo({ top: target.offsetTop - 50, behavior: "smooth" });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

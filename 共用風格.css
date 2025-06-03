@@ -1,0 +1,240 @@
+
+/* 導覽列風格設定--------------------------------------------- */
+/* 導覽列文字樣式 */
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    margin: 3px;
+    padding: 5px 5px;
+}
+
+/* 滑鼠懸停效果 */
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #000000;
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+/* Logo 圖示樣式 */
+.navbar-logo {
+    height: 30px;
+    margin-right: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* h1.h2風格設定--------------------------------------------- */
+h1{
+    color: white;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px #000;
+    font-size: 35px;
+}
+
+h2{
+    text-align: center; /*文字置中*/
+    color:rgb(255, 255, 255);
+    text-shadow: 1px 1px 2px #000;
+    padding:5px; /*空間*/
+    margin-top: 15px; 
+    font-size: 35px;
+    /*letter-spacing: 3px;*/ /*文字間距*/
+}
+
+/* 容器風格設定--------------------------------------------- */
+.container {
+    padding: 28px;
+    max-width: 800px;
+    margin-top: 60px;
+}
+
+/* 輸入框標題風格設定--------------------------------------------- */
+.input-group-text {
+    background-color: none; 
+    width: 30%;
+    align-items: center;
+    justify-content: center;
+    text-align: center; 
+    font-size: 20px; 
+    letter-spacing: 1px; /*文字間距*/
+    font-weight:600; /*字體粗細100-900*/
+    height: 40px;
+  }
+
+  /* 輸入框風格設定--------------------------------------------- */
+  .custom {
+    background-color: none; 
+    text-align: center; /*文字置中*/
+    align-items: center;
+    justify-content: center;
+    text-align-last: center; /* 修正選中的文字置中 */
+    appearance: none; /* 移除瀏覽器預設樣式 (選用) */
+    font-size: 18px; 
+    height: 40px;
+  }
+
+  @media (max-width: 767px) {
+    .input-group-text {
+        min-width: 20%;  /* 手機時縮小 */
+        font-size: 18px; 
+    }
+  }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* 移除箭頭樣式 */
+    margin: 0; /* 移除內邊距 */
+}
+
+  
+/* 按鈕風格設定--------------------------------------------- */
+.btn-綠 {background-image: linear-gradient(to right, #DCE35B 0%, #45B649  51%, #DCE35B  100%)}
+.btn-綠 {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-綠:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+.btn-藍 {background-image: linear-gradient(to right, #1FA2FF 0%, #12D8FA  51%, #1FA2FF  100%)}
+.btn-藍 {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+ }
+
+.btn-藍:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+.btn-黃 {background-image: linear-gradient(to right, #F09819 0%, #EDDE5D  51%, #F09819  100%)}
+.btn-黃 {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-黃:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+.btn-紅 {background-image: linear-gradient(to right, #EB3349 0%, #F45C43  51%, #EB3349  100%)}
+.btn-紅 {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-紅:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+.btn-紫 {background-image: linear-gradient(to right, #4776E6 0%, #8E54E9  51%, #4776E6  100%)}
+.btn-紫 {
+    border: none;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+}
+
+.btn-紫:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #6a6a6a;
+    text-decoration: none;
+}
+
+
+
+
+/* 📦 表格外層容器設定 */
+#result {
+    overflow-x: auto;        /* 若表格過寬，自動出現橫向捲軸 */
+    margin-top: 10px;        /* 與上方元素保留間距 */
+}
+
+/* 📐 表格本體樣式 */
+#result table {
+    width: 100%;             /* 讓表格寬度撐滿容器 */
+    table-layout: auto;      /* 讓每欄寬度依內容自動調整 */
+    font-size: 14px;         /* 表格文字大小 */
+    border-collapse: collapse; /* 合併邊框線，避免雙線 */
+}
+
+/* 📌 表頭列樣式 */
+#result thead tr {
+    color: white;              /* 白色文字 */
+    font-size: 18px;           /* 字體大小 */
+    text-align: center;        /* 置中對齊 */
+}
+
+/* 🏷️ 每個表頭儲存格樣式 */
+#result th {
+    background-color: #126ca0; /* 表頭欄位改為黑色背景 */
+    color: white;              /* 白色字體 */
+    font-weight: bold;         /* 加粗字體 */
+    padding: 5px;             /* 內距空間 */
+    border: 1px solid #ccc;    /* 淡灰邊框線 */
+    white-space: nowrap;       /* 防止自動換行（讓欄位撐開） */
+    text-align: center;        /* 文字置中 */
+    min-width: 80px;           /* 限制欄位最小寬度 */
+}
+
+/* 📄 每個資料格樣式 */
+#result td {
+    padding: 10px;             /* 內距 */
+    text-align: center;        /* 文字置中 */
+    font-weight: bold;
+}
+
+/* 🦓 斑馬紋背景（偶數列） */
+#result tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* 🦓 斑馬紋背景（奇數列） */
+#result tr:nth-child(odd) {
+    background-color: #e8e8e8;
+}
+
+
+  
+      
